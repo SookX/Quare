@@ -6,14 +6,14 @@ import io
 from reportlab.pdfgen import canvas
 
 
-# def create_pdf():
-#     buffer = io.BytesIO()
-#     p = canvas.Canvas(buffer)
-#     p.drawString(100, 750, "This PDF!")
-#     p.showPage()
-#     p.save()
-#     buffer.seek(0)
-#     return buffer
+def create_pdf():
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer)
+    p.drawString(100, 750, "This PDF!")
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return buffer
 
 
 @api_view(['POST'])
