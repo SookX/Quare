@@ -10,6 +10,7 @@ from groq import Groq
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from AI_Models.STSC import utils
+from Alek.webscrape import scrape_google_maps
 
 classes = utils.load_classes().squeeze()
 model, embeddings = utils.load_weights_and_embeddings(classes)
@@ -62,12 +63,11 @@ def question(request):
             word = utils.predict(text, model, classes, embeddings)
             
             specialist = get_specialist(api_key=os.getenv('GROQ_API'), disease=word)
-            print(word)
-            print(specialist)
+            
             #sc_response = ['asdadasdadsad']
-            #sc_response = func2(word)
+            sc_response = scrape_google_maps(specialist, 'Sofia')
 
-            return Response({"message": "Questions processed successfully!", "data": specialist})   
+            return Response({"message": "Questions processed successfully!", "data": sc_response})   
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         

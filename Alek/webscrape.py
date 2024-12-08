@@ -101,10 +101,3 @@ def scrape_google_maps(speciality, location, headless=False):
         i += 1
 
     return business_data
-
-
-speciality = input("Enter the speciality: ")
-location = input("Enter the location: ")
-
-business_info = scrape_google_maps(speciality, location)
-print(business_info)
