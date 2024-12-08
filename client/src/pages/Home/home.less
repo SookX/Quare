@@ -44,3 +44,53 @@
         width: 50rem;
     }
 }
+
+.instructions-section {
+    .shade(background-color, @primary, 80);
+    padding: 5.6rem 6.4rem;
+    display: flex;
+    gap: 1.6rem;
+
+    .step-container {
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+
+        .step-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+    
+            .heading-box {
+                .step {
+                    font-size: 1.6rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    .shade(color, @primary, 30);
+                }
+    
+                .heading {
+                    .tint(color, @primary, 60);
+                }
+            }
+    
+            .image {
+                width: 100%;
+            }
+        }
+        
+        .arrow {
+            .tint(color, @primary, 20);
+            transform: rotate(90deg);
+            width: 4.8rem;
+            height: 4.8rem;
+            font-size: 4.8rem;
+        }
+    }
+
+    .step-container:last-child {
+        .arrow {
+            display: none;
+        }
+    }
+}

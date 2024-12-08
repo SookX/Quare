@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 import { DataContext } from "../../context/DataContext"
-import cross from "../../img/cross.webp"
-import robot from "../../img/robot.webp"
 import './home.less'
+import Hero from "./components/Hero/Hero"
+import Instructions from "./components/Instructions/Instructions"
 
 const Home = () => {
     // Gets global data from the context
@@ -77,7 +77,7 @@ const Home = () => {
 
 
     return (
-        <section className="hero-section">
+        <>
             {/* <form onSubmit={(e) => handleSubmit(e)}>
                 <textarea
                     value={input}
@@ -86,19 +86,9 @@ const Home = () => {
                 <button type="submit">Analyze</button>
             </form>
             <button onClick={handlePDF}>Download my results</button> */}
-            <div className="text-box">
-                <div className="heading-box">
-                    <h1 className="heading">Quare.AI</h1>
-                    <img src={cross} alt="Medical Cross" className="logo" />
-                </div>
-
-                <p className="text">Easy and practical <span>medical AI</span>: simply type in the symptoms you're experiencing to receive a quick health analysis, personalized tips for improvement, and recommendations for the right specialists. You'll also get suggestions for nearby doctors based on your location, making it convenient to take the next steps for your health.</p>
-
-                <button className="btn">Try it now</button>
-            </div>
-
-            <img src={robot} alt="Medical Robot" className="image" />
-        </section>
+            <Hero />
+            <Instructions />
+        </>
     )
 }
 
