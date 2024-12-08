@@ -29,13 +29,11 @@ def question(request):
     
     if request.method == 'POST':
         try:
-            questions_list = request.data.get("body", [])
-            if not questions_list:
+            question_list = request.data.get("question_list")
+            if not question_list:
                 return Response({"error": "No questions provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-            questions_dict = {item['question']: item['answer'] for item in questions_list}
-
-            #word = vasi_model_func(questions_dict)
+            #word = vasi_model_func(question_list)
 
             sc_response = ['asdadasdadsad']
             #sc_response = func2(word)
