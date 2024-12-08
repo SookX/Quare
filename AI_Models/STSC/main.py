@@ -50,4 +50,4 @@ text = 'Diarrhea fever headache tootchache'
 vector = get_symptom_vector(text.split(), embeddings, dim = 300)
 vector = np.expand_dims(vector, axis = 0)
 pred = model.predict(vector).argmax()
-print(le.classes_[pred])
+

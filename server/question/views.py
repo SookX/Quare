@@ -3,7 +3,32 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse
 import io
+import sys
+import os
 from reportlab.pdfgen import canvas
+from groq import Groq
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from AI_Models.STSC import utils
+
+classes = utils.load_classes().squeeze()
+model, embeddings = utils.load_weights_and_embeddings(classes)
+
+def get_specialist(api_key, disease):
+    client = Groq(api_key=api_key)
+
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": f"Which type of doctor treats {disease}? Respond with just the name of the specialist. (Always the same answer)"
+            }
+        ],
+        model="llama3-8b-8192",  
+    )
+
+    return chat_completion.choices[0].message.content
+
 
 
 def create_pdf():
@@ -33,12 +58,16 @@ def question(request):
             if not question_list:
                 return Response({"error": "No questions provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-            #word = vasi_model_func(question_list)
-
-            sc_response = ['asdadasdadsad']
+            text = ' '.join(question_list)
+            word = utils.predict(text, model, classes, embeddings)
+            
+            specialist = get_specialist(api_key=os.getenv('GROQ_API'), disease=word)
+            print(word)
+            print(specialist)
+            #sc_response = ['asdadasdadsad']
             #sc_response = func2(word)
 
-            return Response({"message": "Questions processed successfully!", "data": sc_response})   
+            return Response({"message": "Questions processed successfully!", "data": specialist})   
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
