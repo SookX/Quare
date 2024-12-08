@@ -3,8 +3,8 @@
 .hero-section {
     padding: 9.6rem @1colIn;
     display: grid;
-    grid-template-columns: 4fr 3fr;
-    gap: 2.4rem;
+    grid-template-columns: 5fr 3fr;
+    gap: 3.2rem;
     align-items: center;
 
     .text-box {
@@ -42,6 +42,25 @@
 
     .image {
         width: 50rem;
+        animation: robot 3s ease-in-out infinite;
+
+        @keyframes robot {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(3.2rem);
+            }
+            100% {
+                transform: translateY(0);
+            }
+            // 75% {
+            //     transform: translateY(-3.2rem);
+            // }
+            // 100% {
+            //     transform: translateY(0);
+            // }
+        }
     }
 }
 
