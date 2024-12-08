@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import DataProvider from "./context/DataContext"
 import LayoutGrid from "./components/LayoutGrid/LayoutGrid"
-import Home from "./pages/Home"
+import Home from "./pages/Home/Home"
 
 function App() {
 

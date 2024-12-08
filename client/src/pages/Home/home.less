@@ -1,0 +1,46 @@
+@import '../../globalStyling/variables.less';
+
+.hero-section {
+    padding: 9.6rem @1colIn;
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    gap: 2.4rem;
+    align-items: center;
+
+    .text-box {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        font-size: 1.6rem;
+
+        .heading-box {
+            display: flex;
+            gap: 2.4rem;
+            align-items: center;
+            .shade(color, @primary, 50);
+
+            .logo {
+                width: 7.2rem;
+                height: 7.2rem;
+            }
+        }
+
+        .text {
+            color: #4F5355;
+            font-weight: 500;
+
+            span {
+                font-weight: bold;
+                color: @secondary;
+            }
+        }
+
+        .btn {
+            width: 12.8rem;
+        }
+    }
+
+    .image {
+        width: 50rem;
+    }
+}
