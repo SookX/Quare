@@ -44,14 +44,15 @@ def question(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-@api_view(['POST'])
+@api_view(['GET'])
 def send_pdf(request):
     """
     Handles POST requests, generates a PDF, and sends it to the frontend.
     """
     
-    pdf_buffer = create_pdf()
+    if request.method == 'GET':
+        pdf_buffer = create_pdf()
 
-    response = HttpResponse(pdf_buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="generated.pdf"'
-    return response
+        response = HttpResponse(pdf_buffer, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="generated.pdf"'
+        return response
