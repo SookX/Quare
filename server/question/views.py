@@ -47,7 +47,7 @@ def question(request):
 @api_view(['GET'])
 def send_pdf(request):
     """
-    Handles POST requests, generates a PDF, and sends it to the frontend.
+    Handles GET requests, generates a PDF, and sends it to the frontend.
     """
     
     if request.method == 'GET':
