@@ -1,7 +1,7 @@
 # **Quare**
 
 ### **Category:**  
-Health  
+Health and Wellness  
 
 ---
 
