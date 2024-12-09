@@ -135,13 +135,13 @@ def question(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-@api_view(['GET'])
+@api_view(['POST'])
 def send_pdf(request):
     """
-    Handles GET requests, and sends it to the frontend.
+    Handles POST requests, and sends it to the frontend.
     """
     
-    if request.method == 'GET':
+    if request.method == 'POST':
         disease = str(request.data.get("disease"))
         specialist = str(request.data.get('specialist'))
         list_of_specialists = list(request.data.get('list_of_specialists'))
