@@ -56,6 +56,7 @@ def question(request):
     if request.method == 'POST':
         try:
             question_list = request.data.get("question_list")
+            location = str(request.data.get('location'))
             if not question_list:
                 return Response({"error": "No questions provided"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -65,7 +66,7 @@ def question(request):
             specialist = get_specialist(api_key=os.getenv('GROQ_API'), disease=word)
             
             #sc_response = ['asdadasdadsad']
-            sc_response = scrape_google_maps(specialist, 'Sofia')
+            sc_response = scrape_google_maps(specialist, location)
 
             return Response({"message": "Questions processed successfully!", "data": sc_response})   
         except Exception as e:
