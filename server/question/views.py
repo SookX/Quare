@@ -144,7 +144,7 @@ def send_pdf(request):
     if request.method == 'GET':
         disease = str(request.data.get("disease"))
         specialist = str(request.data.get('specialist'))
-        list_of_specialists = request.data.get('list_of_specialists')
+        list_of_specialists = list(request.data.get('list_of_specialists'))
 
         data = {
             'disease': disease,
