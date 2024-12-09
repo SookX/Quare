@@ -7,6 +7,11 @@ import sys
 import os
 from reportlab.pdfgen import canvas
 from groq import Groq
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+import io
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from AI_Models.STSC import utils
@@ -32,14 +37,72 @@ def get_specialist(api_key, disease):
 
 
 
-def create_pdf():
+
+
+def create_pdf(data):
     buffer = io.BytesIO()
-    p = canvas.Canvas(buffer)
-    p.drawString(100, 750, "This PDF!")
-    p.showPage()
-    p.save()
+    pdf = SimpleDocTemplate(buffer, pagesize=letter)
+
+    styles = getSampleStyleSheet()
+
+    subtitle_style = ParagraphStyle(
+        name='Subtitle',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=14,
+        alignment=1,  
+        spaceAfter=12
+    )
+
+    header_style = ParagraphStyle(
+        name='Header',
+        parent=styles['Heading4'],
+        fontName='Helvetica-Bold',
+        fontSize=12,
+        alignment=1,
+        spaceAfter=6,
+        textColor=colors.whitesmoke,
+    )
+
+    row_style = ParagraphStyle(
+        name='Row',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=10,
+        alignment=1,
+        spaceAfter=6,
+        textColor=colors.black,
+    )
+
+    story = []
+
+    story.append(Paragraph(f"Specialist Recommendations for {data['disease']}", styles['Title']))
+    story.append(Paragraph("Prepared by Quare.AI", subtitle_style))
+    story.append(Spacer(1, 20))
+
+    story.append(Paragraph(f"Disease: {data['disease']}", row_style))
+    story.append(Paragraph(f"Specialist: {data['specialist']}", row_style))
+    story.append(Spacer(1, 20))
+
+    for specialist in data['list_of_specialist']:
+        story.append(Spacer(1, 10))  
+        
+        story.append(Paragraph(f"<b>Name:</b> {specialist.get('name', '')}", row_style))
+        story.append(Paragraph(f"<b>Rating:</b> {specialist.get('rating', '')}", row_style))
+        story.append(Paragraph(f"<b>Reviews:</b> {specialist.get('reviews_count', '')}", row_style))
+        story.append(Paragraph(f"<b>Address:</b> {specialist.get('address', '')}", row_style))
+        story.append(Paragraph(f"<b>Contact:</b> {specialist.get('contact', '')}", row_style))
+        
+        website_label = f"<link href='{specialist.get('website', '')}'>Visit Website</link>"
+        story.append(Paragraph(f"<b>Website:</b> {website_label}", row_style))
+
+    story.append(Spacer(1, 50))
+    story.append(Paragraph("Generated using Quare.AI", row_style))
+
+    pdf.build(story)
     buffer.seek(0)
     return buffer
+
 
 
 @api_view(['POST'])
@@ -65,10 +128,10 @@ def question(request):
             
             specialist = get_specialist(api_key=os.getenv('GROQ_API'), disease=word)
             
-            #sc_response = ['asdadasdadsad']
             sc_response = scrape_google_maps(specialist, location)
+            print(sc_response)
 
-            return Response({"message": "Questions processed successfully!", "data": sc_response})   
+            return Response({"message": "Questions processed successfully!", "data": sc_response, 'specialist': specialist})   
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
@@ -79,7 +142,18 @@ def send_pdf(request):
     """
     
     if request.method == 'GET':
-        pdf_buffer = create_pdf()
+        disease = str(request.data.get("disease"))
+        specialist = str(request.data.get('specialist'))
+        list_of_specialists = request.data.get('list_of_specialists')
+
+        data = {
+            'disease': disease,
+            'specialist': specialist,
+            'list_of_specialist': list_of_specialists
+
+        }
+        
+        pdf_buffer = create_pdf(data)
 
         response = HttpResponse(pdf_buffer, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="generated.pdf"'
