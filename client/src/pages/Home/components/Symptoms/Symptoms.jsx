@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { DataContext } from "../../../../context/DataContext"
 import { IoClose } from "react-icons/io5";
 import axios from "axios";
+import Loader from "../../../../components/Loader/Loader";
 
 const Symptoms = () => {
     // Gets global data from the context
@@ -123,6 +124,11 @@ const Symptoms = () => {
 
     return (
         <section className="symptoms-section">
+            {
+                loading &&
+                <Loader />
+            }
+
             <h3 className="heading">Quare.AI</h3>
             <p className="text">needs some information to analyze your health. Please write your symptoms as shown above.</p>
 

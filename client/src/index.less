@@ -65,3 +65,36 @@ h5 {
     .tint(color, @primary, 80);
     font-weight: bold;
 }
+
+
+
+// LOADER
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
+
+    .loader-img {
+        width: 36rem;
+
+        animation: robot ease-in-out 2s infinite;
+
+        @keyframes robot {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(3.2rem);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    }
+}
