@@ -1,24 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import DataProvider from "./context/DataContext"
-import LayoutGrid from "./components/LayoutGrid/LayoutGrid"
 import Home from "./pages/Home/Home"
+import axios from "axios"
 
 function App() {
+  // Sets the url for the backend server
+  axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
 
+  
   return (
     <BrowserRouter>
 
-      <DataProvider>
+      <Routes>
 
-        <LayoutGrid type='screen' />
+        <Route path="/" element={<Home />} />
 
-        <Routes>
-
-          <Route path="/" element={<Home />} />
-
-        </Routes>
-
-      </DataProvider>
+      </Routes>
 
     </BrowserRouter>
   )
