@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { DataContext } from "../../../../context/DataContext"
 import { IoClose } from "react-icons/io5";
+import axios from "axios";
 
 const Symptoms = () => {
     // Gets global data from the context
@@ -11,6 +12,7 @@ const Symptoms = () => {
     // Holds the state for the form
     const [input, setInput] = useState('')
     const [question_list, setQuestionList] = useState([])
+    const [city, setCity] = useState('Sofia')
 
 
 
@@ -36,6 +38,33 @@ const Symptoms = () => {
 
 
 
+    // Gets user's location
+    const handleGetLocation = async () => {
+        const success = async(pos) => {
+            const {latitude, longitude} = pos.coords
+            const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+            if(response.status == 200) setCity(response.data.city)
+            else setCity("Sofia")
+        }
+
+        const error = () => {
+            setCity("Sofia")
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error)
+        } else {
+            setCity("Sofia")
+        }
+    }
+
+
+    useEffect(() => {
+        handleGetLocation()
+    }, [])
+
+
+
     // Holds the loading and error state
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -48,14 +77,12 @@ const Symptoms = () => {
 
         setLoading(true)
 
-        console.log(question_list)
-
         const response = await crud({
             url: '/question/',
             method: 'post',
             body: {
                 question_list,
-                location: "Botevgrad"
+                location: city
             }
         })
 
