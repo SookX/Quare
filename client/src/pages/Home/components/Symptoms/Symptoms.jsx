@@ -14,6 +14,7 @@ const Symptoms = () => {
     const [input, setInput] = useState('')
     const [question_list, setQuestionList] = useState([])
     const [city, setCity] = useState('Sofia')
+    const [result, setResult] = useState(null)
 
 
 
@@ -89,6 +90,11 @@ const Symptoms = () => {
 
         console.log(response)
 
+        if(response.status == 200) {
+            setError(null)
+            setResult(response.data)
+        } else setError(response.response.data.error)
+
         setLoading(false)
     }
 
@@ -96,9 +102,18 @@ const Symptoms = () => {
 
     // Makes a request to the backend to download the pdf
     const handlePDF = async () => {
+        console.log(result)
+        let specialist = result.specialist
+        let list_of_specialists = result.data
+        const body = {
+            specialist,
+            list_of_specialists
+        }
+
         const response = await crud({
             url: '/download/',
-            method: 'get'
+            method: 'get',
+            body
         })
 
         console.log(response)
@@ -128,33 +143,48 @@ const Symptoms = () => {
                 loading &&
                 <Loader />
             }
+            <div className="form-container">
+                <h3 className="heading">Quare.AI</h3>
+                <p className="text">needs some information to analyze your health. Please write your symptoms as shown above.</p>
 
-            <h3 className="heading">Quare.AI</h3>
-            <p className="text">needs some information to analyze your health. Please write your symptoms as shown above.</p>
+                {
+                    error &&
+                    <p className="error">{error}</p>
+                }
 
-            <form className="form" onSubmit={(e) => handleSubmit(e)}>
-                <div className="input-container">
-                    <div className="symptom-box">
-                        {
-                            question_list.map((question, i) => (
-                                <div className={`symptom symptom${(i % 7) + 1}`} key={i}>
-                                    <p>{question}</p>
-                                    <IoClose onClick={() => handleRemoveSymptom(i)} className="icon" />
-                                </div>
-                            ))
-                        }
+                <form className="form" onSubmit={(e) => handleSubmit(e)}>
+                    <div className="input-container">
+                        <div className="symptom-box">
+                            {
+                                question_list.map((question, i) => (
+                                    <div className={`symptom symptom${(i % 7) + 1}`} key={i}>
+                                        <p>{question}</p>
+                                        <IoClose onClick={() => handleRemoveSymptom(i)} className="icon" />
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <textarea
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={(e) => handleInput(e)}
+                            placeholder="Write your symptoms here..."
+                        />
                     </div>
+                    <button className="btn" type="submit">Analyze</button>
+                </form>
+                <button onClick={handlePDF}>Download my results</button>
+            </div>
 
-                    <textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => handleInput(e)}
-                        placeholder="Write your symptoms here..."
-                    />
-                </div>
-                <button className="btn" type="submit">Analyze</button>
-            </form>
-            {/* <button onClick={handlePDF}>Download my results</button> */}
+            <div className="result-container">
+                {
+                    result &&
+                    result.data.map((doctor, i) => (
+                        <p className="doctor" key={i}>doctow</p>
+                    ))
+                }
+            </div>
         </section>
     )
 }
