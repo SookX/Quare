@@ -1,5 +1,6 @@
 import cross from "../../../../img/cross.webp"
 import robot from "../../../../img/robot.webp"
+import { HashLink } from 'react-router-hash-link'
 
 const Hero = () => {
     return (
@@ -12,7 +13,7 @@ const Hero = () => {
 
                 <p className="text">Easy and practical <span>medical AI</span>: simply type in the symptoms you're experiencing to receive a quick health analysis, personalized tips for improvement, and recommendations for the right specialists. You'll also get suggestions for nearby doctors based on your location, making it convenient to take the next steps for your health.</p>
 
-                <button className="btn">Try it now</button>
+                <HashLink to='/#form' className="btn">Try it now</HashLink>
             </div>
 
             <img src={robot} alt="Medical Robot" className="image" />

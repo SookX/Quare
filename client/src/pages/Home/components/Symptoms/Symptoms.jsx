@@ -3,6 +3,7 @@ import { DataContext } from "../../../../context/DataContext"
 import { IoClose } from "react-icons/io5";
 import axios from "axios";
 import Loader from "../../../../components/Loader/Loader";
+import { Link } from "react-router-dom";
 
 const Symptoms = () => {
     // Gets global data from the context
@@ -88,7 +89,6 @@ const Symptoms = () => {
             }
         })
 
-        console.log(response)
 
         if(response.status == 200) {
             setError(null)
@@ -102,7 +102,6 @@ const Symptoms = () => {
 
     // Makes a request to the backend to download the pdf
     const handlePDF = async () => {
-        console.log(result)
         let specialist = result.specialist
         let list_of_specialists = result.data
         const body = {
@@ -116,11 +115,9 @@ const Symptoms = () => {
             body
         })
 
-        console.log(response)
 
         const pdfBlob = new Blob([response.data], { type: 'application/pdf' })
         const url = window.URL.createObjectURL(pdfBlob)
-        console.log(url)
 
         const tempLink = document.createElement('a')
         tempLink.href = url
@@ -138,7 +135,7 @@ const Symptoms = () => {
 
 
     return (
-        <section className="symptoms-section">
+        <section className={`symptoms-section ${result ? 'symptoms-grid' : null}`} id="form">
             {
                 loading &&
                 <Loader />
@@ -174,17 +171,32 @@ const Symptoms = () => {
                     </div>
                     <button className="btn" type="submit">Analyze</button>
                 </form>
-                <button onClick={handlePDF}>Download my results</button>
             </div>
 
-            <div className="result-container">
-                {
-                    result &&
-                    result.data.map((doctor, i) => (
-                        <p className="doctor" key={i}>doctow</p>
-                    ))
-                }
-            </div>
+            {
+                result &&
+                <div className="result-container">
+                    <h4 className="heading">{result.specialist}s near you</h4>
+
+                    <div className="doctor-container">
+                        {
+                            result &&
+                            result.data.map((doctor, i) => (
+                                <Link to={doctor.website} target="_blank" className="doctor" key={i}>
+                                    <h5 className="heading">{doctor.name}</h5>
+                                    <p className="address">{doctor.address}</p>
+                                    <div className="rating-box">
+                                        <p className="rating">Rating {doctor.rating}</p>
+                                        <p className="reviews">{doctor.reviews_count} Reviews</p>
+                                    </div>
+                                </Link>
+                            ))
+                        }
+                    </div>
+
+                    <button onClick={handlePDF} className="btn">Download my results</button>
+                </div>
+            }
         </section>
     )
 }

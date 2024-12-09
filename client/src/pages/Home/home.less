@@ -113,72 +113,121 @@
 .symptoms-section {
     padding: 12.8rem @2colIn;
 
-    .heading {
-        .shade(color, @primary, 50);
-        text-align: center;
-    }
+    .form-container {
 
-    .text {
-        color: #4F5355;
-        font-size: 1.6rem;
-        text-align: center;
-        margin-bottom: 3.2rem;
-    }
 
-    .form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.6rem;
+        .heading {
+            .shade(color, @primary, 50);
+            text-align: center;
+        }
 
-        .input-container {
-            width: 100%;
-            border: solid 0.1rem #23523D;
-            padding: 2rem 2.4rem;
-            background-color: #fff;
+        .text {
+            color: #4F5355;
+            font-size: 1.6rem;
+            text-align: center;
+            margin-bottom: 3.2rem;
+        }
 
-            .symptom-box {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.8rem;
-                margin-bottom: 1.6rem;
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
 
-                @colors: #22577a, #b87b42, #38a3a5, #57cc99, #7a4522, #80ed99, #a53a38;
-                each(@colors, {
-                    .symptom@{index} {
-                        @color: @value;
-                        .shade(background-color, @color, 10);
-                        .tint(color, @color, 70);
+            .input-container {
+                width: 100%;
+                border: solid 0.1rem #23523D;
+                padding: 2rem 2.4rem;
+                background-color: #fff;
 
-                        .icon:hover, .icon:active {
-                            .tint(color, @color, 90);
+                .symptom-box {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.8rem;
+                    margin-bottom: 1.6rem;
+
+                    @colors: #22577a, #b87b42, #38a3a5, #57cc99, #7a4522, #80ed99, #a53a38;
+                    each(@colors, {
+                        .symptom@{index} {
+                            @color: @value;
+                            .shade(background-color, @color, 10);
+                            .tint(color, @color, 70);
+
+                            .icon:hover, .icon:active {
+                                .tint(color, @color, 90);
+                            }
+                        }
+                    });
+
+                    .symptom {
+                        padding: 0.2rem 0.8rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.4rem;
+                        font-size: 1.4rem;
+
+                        .icon {
+                            cursor: pointer;
+                            width: 1.6rem;
+                            height: 1.6rem;
                         }
                     }
-                });
+                }
 
-                .symptom {
-                    padding: 0.2rem 0.8rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.4rem;
-                    font-size: 1.4rem;
-
-                    .icon {
-                        cursor: pointer;
-                        width: 1.6rem;
-                        height: 1.6rem;
+                textarea {
+                    width: 100%;
+                    resize: none;
+                    font-size: 1.6rem;
+                    height: 6.4rem;
+                    font-family: @font-primary;
+                    border: none;
+                    &::placeholder {
+                        font-family: @font-primary;
                     }
                 }
             }
 
-            textarea {
+            .btn {
                 width: 100%;
-                resize: none;
-                font-size: 1.6rem;
-                height: 6.4rem;
-                font-family: @font-primary;
-                border: none;
-                &::placeholder {
-                    font-family: @font-primary;
+                .shade(background-color, @primary, 60);
+            }
+        }
+
+    }
+
+    .result-container {
+        .heading {
+            text-align: left;
+            margin-bottom: 1.6rem;
+            .shade(color, @primary, 50);
+        }
+
+        .doctor-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            max-height: 36rem;
+            overflow: auto;
+            margin-bottom: 1.6rem;
+
+            .doctor {
+                text-decoration: none;
+                color: #4F5355;
+                border: solid 0.1rem #23523D;
+                padding: 1.2rem 2.4rem;
+
+                .heading {
+                    text-align: start;
+                }
+
+                .address {
+                    font-size: 1.6rem;
+                    margin-bottom: 0.8rem;
+                }
+
+                .rating-box {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 1.4rem;
                 }
             }
         }
@@ -187,5 +236,24 @@
             width: 100%;
             .shade(background-color, @primary, 60);
         }
+
+        animation: entrance 1s ease-in-out;
+
+        @keyframes entrance {
+            0% {
+                transform: translateX(150%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
     }
+}
+
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 6.4rem;
+    padding: 12.8rem @0colIn;
+    align-items: center;
 }
