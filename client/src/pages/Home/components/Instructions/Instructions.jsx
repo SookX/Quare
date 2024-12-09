@@ -4,6 +4,7 @@ import textarea3 from '../../../../img/textarea3.webp'
 import Step from './components/Step'
 
 const Instructions = () => {
+    // Holds the instructions
     const instructions = [
         {
             title: "Click on the textarea",
@@ -18,6 +19,9 @@ const Instructions = () => {
             image: textarea3
         }
     ]
+
+
+
     return (
         <section className="instructions-section">
             {

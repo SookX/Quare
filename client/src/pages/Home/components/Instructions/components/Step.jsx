@@ -1,4 +1,4 @@
-const Step = ({num, title, image}) => {
+const Step = ({ num, title, image }) => {
     return (
         <div className="step-container">
             <div className="step-box">

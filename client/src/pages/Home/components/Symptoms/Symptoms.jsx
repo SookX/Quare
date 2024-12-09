@@ -1,16 +1,10 @@
-import { useContext, useEffect, useState } from "react"
-import { DataContext } from "../../../../context/DataContext"
+import { useEffect, useState } from "react"
 import { IoClose } from "react-icons/io5";
 import axios from "axios";
 import Loader from "../../../../components/Loader/Loader";
 import { Link } from "react-router-dom";
 
 const Symptoms = () => {
-    // Gets global data from the context
-    const { crud } = useContext(DataContext)
-
-
-
     // Holds the state for the form
     const [input, setInput] = useState('')
     const [question_list, setQuestionList] = useState([])
@@ -80,13 +74,9 @@ const Symptoms = () => {
 
         setLoading(true)
 
-        const response = await crud({
-            url: '/question/',
-            method: 'post',
-            body: {
+        const response = await axios.post('/question/', {
                 question_list,
                 location: city
-            }
         })
 
 
@@ -105,15 +95,14 @@ const Symptoms = () => {
         let specialist = result.specialist
         let list_of_specialists = result.data
         const body = {
+            disease: "Hemeroidi",
             specialist,
             list_of_specialists
         }
 
-        const response = await crud({
-            url: '/download/',
-            method: 'get',
-            body
-        })
+        console.log(body)
+
+        const response = await axios.get('/download/', body)
 
 
         const pdfBlob = new Blob([response.data], { type: 'application/pdf' })
