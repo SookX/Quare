@@ -1,5 +1,6 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { DataContext } from "../../../../context/DataContext"
+import { IoClose } from "react-icons/io5";
 
 const Symptoms = () => {
     // Gets global data from the context
@@ -9,6 +10,29 @@ const Symptoms = () => {
 
     // Holds the state for the form
     const [input, setInput] = useState('')
+    const [question_list, setQuestionList] = useState([])
+
+
+
+    // Changes the input
+    const handleInput = (e) => {
+        if(e.key == 'Enter') {
+            let symptom
+            if(input[0] == '\n') symptom = input.split('\n')[1]
+            else symptom = input
+            setQuestionList([...question_list, symptom])
+            setInput('')
+        }
+    }
+
+
+
+    // Removes a symptom from the list
+    const handleRemoveSymptom = (i) => {
+        let newSymptoms = [...question_list]
+        newSymptoms.splice(i, 1)
+        setQuestionList(newSymptoms)
+    }
 
 
 
@@ -24,17 +48,14 @@ const Symptoms = () => {
 
         setLoading(true)
 
-        let question_list
-        if(input) question_list = input.split(' ')
-        else question_list = null
-
         console.log(question_list)
 
         const response = await crud({
             url: '/question/',
             method: 'post',
             body: {
-                question_list
+                question_list,
+                location: "Botevgrad"
             }
         })
 
@@ -79,11 +100,25 @@ const Symptoms = () => {
             <p className="text">needs some information to analyze your health. Please write your symptoms as shown above.</p>
 
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
-                <textarea
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Write your symptoms here..."
-                />
+                <div className="input-container">
+                    <div className="symptom-box">
+                        {
+                            question_list.map((question, i) => (
+                                <div className={`symptom symptom${(i % 7) + 1}`} key={i}>
+                                    <p>{question}</p>
+                                    <IoClose onClick={() => handleRemoveSymptom(i)} className="icon" />
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => handleInput(e)}
+                        placeholder="Write your symptoms here..."
+                    />
+                </div>
                 <button className="btn" type="submit">Analyze</button>
             </form>
             {/* <button onClick={handlePDF}>Download my results</button> */}

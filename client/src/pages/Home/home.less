@@ -136,17 +136,56 @@
         flex-direction: column;
         gap: 1.6rem;
 
-        textarea {
+        .input-container {
             width: 100%;
-            resize: none;
             border: solid 0.1rem #23523D;
             padding: 2rem 2.4rem;
-            height: 12.8rem;
-            font-size: 1.6rem;
             background-color: #fff;
 
-            &::placeholder {
+            .symptom-box {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                margin-bottom: 1.6rem;
+
+                @colors: #22577a, #b87b42, #38a3a5, #57cc99, #7a4522, #80ed99, #a53a38;
+                each(@colors, {
+                    .symptom@{index} {
+                        @color: @value;
+                        .shade(background-color, @color, 10);
+                        .tint(color, @color, 70);
+
+                        .icon:hover, .icon:active {
+                            .tint(color, @color, 90);
+                        }
+                    }
+                });
+
+                .symptom {
+                    padding: 0.2rem 0.8rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    font-size: 1.4rem;
+
+                    .icon {
+                        cursor: pointer;
+                        width: 1.6rem;
+                        height: 1.6rem;
+                    }
+                }
+            }
+
+            textarea {
+                width: 100%;
+                resize: none;
+                font-size: 1.6rem;
+                height: 6.4rem;
                 font-family: @font-primary;
+                border: none;
+                &::placeholder {
+                    font-family: @font-primary;
+                }
             }
         }
 
