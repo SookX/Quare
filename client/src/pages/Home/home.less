@@ -41,18 +41,20 @@
     }
 
     .image {
-        width: 50rem;
+        width: 40rem;
         animation: robot 3s ease-in-out infinite;
+
+        @rotation: 10deg;
 
         @keyframes robot {
             0% {
-                transform: translateY(0);
+                transform: translateY(0) rotate(@rotation);
             }
             50% {
-                transform: translateY(3.2rem);
+                transform: translateY(3.2rem) rotate(@rotation);
             }
             100% {
-                transform: translateY(0);
+                transform: translateY(0) rotate(@rotation);
             }
             // 75% {
             //     transform: translateY(-3.2rem);
@@ -110,6 +112,47 @@
     .step-container:last-child {
         .arrow {
             display: none;
+        }
+    }
+}
+
+.symptoms-section {
+    padding: 12.8rem @2colIn;
+
+    .heading {
+        .shade(color, @primary, 50);
+        text-align: center;
+    }
+
+    .text {
+        color: #4F5355;
+        font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 3.2rem;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        textarea {
+            width: 100%;
+            resize: none;
+            border: solid 0.1rem #23523D;
+            padding: 2rem 2.4rem;
+            height: 12.8rem;
+            font-size: 1.6rem;
+            background-color: #fff;
+
+            &::placeholder {
+                font-family: @font-primary;
+            }
+        }
+
+        .btn {
+            width: 100%;
+            .shade(background-color, @primary, 60);
         }
     }
 }
