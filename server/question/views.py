@@ -131,7 +131,7 @@ def question(request):
             sc_response = scrape_google_maps(specialist, location)
             print(sc_response)
 
-            return Response({"message": "Questions processed successfully!", "data": sc_response, 'specialist': specialist})   
+            return Response({"message": "Questions processed successfully!", "data": sc_response, 'specialist': specialist, 'disease': word})   
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
